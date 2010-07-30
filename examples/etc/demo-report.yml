@@ -3,7 +3,7 @@ Report::Generator::Render::TT2:
   config:
     ABSOLUTE: 1
     INCLUDE_PATH:
-    - share
+      - share
   options: {}
   output: demo.sql
   template: test2.tt2
