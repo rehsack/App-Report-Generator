@@ -1,6 +1,6 @@
 Build.PL
 Changes
-examples/etc/demo-report.yml
+examples/etc/demo-report.jsn
 examples/test2.tt2
 lib/App/Report/Generator.pm
 lib/App/Report/Generator/Command/GenReport.pm
