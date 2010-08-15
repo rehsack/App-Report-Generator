@@ -13,7 +13,8 @@ use Cwd;
 use File::Basename ();
 use File::Path;
 use File::Spec ();
-use YAML::Any qw(LoadFile DumpFile);
+use JSON::Any;
+use File::Slurp;
 
 my $dir = File::Spec->catdir( getcwd(), 'test_output' );
 
@@ -23,17 +24,17 @@ mkpath $dir;
 mkpath( File::Spec->catdir( $dir, 'etc' ) );
 
 my $examples = File::Spec->catdir( getcwd(), 'examples' );
-
-my $example_yamls = File::Spec->catfile( $examples, 'etc', '*.yml' );
-foreach my $yml ( glob($example_yamls) )
+my $coder = JSON::Any->new();
+my $example_cfgs = File::Spec->catfile( $examples, 'etc', '*.jsn' );
+foreach my $cfg ( glob($example_cfgs) )
 {
-    my $tgtfn = File::Spec->catfile( $dir, 'etc', File::Basename::basename($yml) );
-    my $testyml = LoadFile($yml);
-    $testyml->{"Report::Generator::Render::TT2"}->{output} =
-      File::Spec->catfile( $dir, $testyml->{"Report::Generator::Render::TT2"}->{output} );
-    $testyml->{"Report::Generator::Render::TT2"}->{template} =
-      File::Spec->catfile( $examples, $testyml->{"Report::Generator::Render::TT2"}->{template} );
-    DumpFile( $tgtfn, $testyml );
+    my $tgtfn = File::Spec->catfile( $dir, 'etc', File::Basename::basename($cfg) );
+    my $testfcnt = read_file($cfg);
+    my $testcfg = $coder->decode($testfcnt);
+    my $test_renderer = $testcfg->{"Report::Generator::Render::TT2"};
+    $test_renderer->{output} = File::Spec->catfile( $dir, $test_renderer->{output} );
+    $test_renderer->{template} = File::Spec->catfile( $examples, $test_renderer->{template} );
+    write_file( $tgtfn, $coder->encode($testcfg) );
 }
 
 $ENV{APP_GENREPORT_CONFIGBASE} = 'test_output';
