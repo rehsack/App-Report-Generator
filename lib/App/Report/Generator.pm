@@ -9,7 +9,7 @@ App::Report::Generator - Command line tool around Report::Controller
 
 =cut
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use App::Cmd::Setup-app;
 

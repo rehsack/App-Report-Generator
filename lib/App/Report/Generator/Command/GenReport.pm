@@ -47,7 +47,7 @@ use Report::Generator;
 
 use App::Report::Generator-command;
 
-$VERSION = "0.001";
+$VERSION = "0.002";
 
 #sub opt_spec {
 #}
