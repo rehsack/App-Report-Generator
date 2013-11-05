@@ -29,6 +29,11 @@ my $builder = Module::Build->new(
     },
     add_to_cleanup      => [ 'App-Report-Generator-*' ],
     create_makefile_pl => 'traditional',
+    meta_merge => {
+        resources => {
+            repository => 'https://github.com/rehsack/App-Report-Generator'
+        }
+    },
 );
 
 $builder->create_build_script();
